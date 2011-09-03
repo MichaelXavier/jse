@@ -1,0 +1,37 @@
+name: jse
+version: 0.0.0
+synopsis: JSON Stream Editor
+description:
+  Simple utility for processing and filtering streams of JSON, such as server
+  logs. Input files are formatted as a single JSON object per line.
+
+category:           Text
+license:            MIT
+license-file:       LICENSE
+author:             Michael Xavier <michael@michaelxavier.net>
+maintainer:         Michael Xavier <michael@michaelxavier.net>
+cabal-version:      >= 1.6
+build-type:         Simple
+extra-source-files: README
+homepage:           http://github.com/michaelxavier/MusicBrainz
+
+Executable: jse
+Main-is: Main.hs
+Exposed-modules: Audio.MusicBrainz,
+                Audio.MusicBrainz.Types,
+                Audio.MusicBrainz.Monad
+Ghc-Options:     -Wall
+build-depends:   aeson            >= 0.3.2.11 && < 0.4,
+                attoparsec       >= 0.9.1.2  && < 0.10,
+                base             >= 4        && < 5,
+                blaze-builder    >= 0.3.0.1  && < 0.4,
+                bytestring       >= 0.9.1.10 && < 0.10,
+                case-insensitive >= 0.3.0.1  && < 0.4,
+                cmdargs          >= 0.8      && < 0.9,
+                enumerator       >= 0.4.14   && < 0.5,
+                pcre-light       >= 0.4      && < 0.5,
+                text             >= 0.11.1.5 && < 0.12
+
+source-repository head
+  type:     git
+  location: git://github.com/michaelxavier/MusicBrainz.git
