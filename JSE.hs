@@ -94,10 +94,24 @@ output = continue step
           tryIO $ mapM_ (toByteStringIO BS.putStrLn) builders
           continue step
 
+collectMatches'' :: Monad m => Filter -> Enumeratee Object Bool m b
+collectMatches'' f = EL.map (`objectMatches` f)
+
+collectMatches' :: Monad m => Enumeratee (Maybe [ByteString]) (Maybe [ByteString]) m b
+collectMatches' = EL.filter isJust
+
+collectMatches (PatternFilter f reg) = EL.map (\obj -> fuck $ finder obj)
+  where getMatch (String text) = match reg (encodeUtf8 text) []
+        fuck (Nothing) = Nothing
+        fuck (Just x) = getMatch x
+        finder obj = M.lookup f obj
+
 c2w8 :: Char -> Word8
 c2w8 = fromIntegral . fromEnum
 
+-- If no fields are specified, keep them all
 restrictFields :: [Text] -> Object -> Object
+restrictFields [] = id
 restrictFields fs = M.filterWithKey flt
   where flt f _ = f `elem` fs
 
@@ -132,7 +146,7 @@ objectMatches obj (ValueFilter f v cSensitive) = isJust $ fmap matcher $ M.looku
   where matcher (String text) = if cSensitive then text == v
                                 else               CI.mk text == CI.mk v
         matcher _             = False
-objectMatches obj (PatternFilter f reg) = isJust $ fmap matcher $ M.lookup f obj
+objectMatches obj (PatternFilter f reg) = maybe False matcher $ M.lookup f obj
   where matcher (String text) = isJust $ match reg (encodeUtf8 text) []
         matcher _             = False
 

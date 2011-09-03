@@ -1,8 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main (main) where
 
--- TODO: turn off cliconfig
-import JSE.CLI (annotations, convertConfig, CLIConfig(..)) 
+import JSE.CLI (annotations, convertConfig) 
 import JSE (pipeline, Config(..))
 import Data.Enumerator (run_, printChunks, ($$), (=$))
 import Data.Enumerator.Binary (enumHandle)
@@ -11,5 +10,5 @@ import System.IO (stdin)
 
 main :: IO ()
 main = do
-  cliConfig <- cmdArgs_ annotations :: IO CLIConfig
+  cliConfig <- cmdArgs_ annotations
   run_ $ pipeline $ convertConfig cliConfig

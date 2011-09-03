@@ -31,8 +31,8 @@ data CLIConfig = CLIConfig { rFields     :: [String],
 annotations :: Annotate Ann
 annotations = record CLIConfig {rFields = def, ignoreC = False, inFile = Nothing, filterSpecs = []} 
                      [ rFields    := def     += help "Fields to return" += explicit += typ "FIELD" += name "f",
-                      ignoreC     := False   += help "Ignore case" += explicit += name "i",
-                      inFile      := Nothing += typFile += help "Filename (stdin otherwise)",
+                      ignoreC     := False   += help "Ignore case" += explicit += name "c",
+                      inFile      := Nothing += typFile += explicit += name "i" += help "Filename (stdin otherwise)",
                       filterSpecs := def     += args]
                       += program "jse"
                       += summary "JSON Stream Editor"
