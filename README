@@ -6,12 +6,38 @@ Stream editor. I started this project to possibly improve on the original's API
 and to teach myself about the Enumerator pattern, Blaze Builder and stream
 editing in Haskell. 
 
+## Status
+Still working out the kinks. Test suite is not in place. Need to work on using
+cabal to install dependencies
+
 ## Building
 `make`
 
 ## Usage
-`bin/jse --help`
+    bin/jse --help
 
-## Status
-Filtering is currently not working. Test suite is not in place. Don't use it
-for important stuff yet. Need to work on using cabal to install dependencies
+    JSON Stream Editor
+
+    jse [OPTIONS] [ITEM]
+
+    Common flags:
+      -f=FIELD            Fields to return. Returns all if not specified.
+      -i=FILE             Filename (stdin otherwise)
+      -c                  Ignore case
+      -?       --help     Display help message
+      -V       --version  Print version information
+
+### Reading from STDIN
+`bin/jse -f timestamp < bigfile.log`
+
+### Searching by full field values
+`bin/jse -f timestamp somefield:true someotherfield:null yetanother:"hi" < bigfile.log`
+
+### Searching by regular expression values (values must be strings)
+`bin/jse -f timestamp somefield:/ERROR/ < bigfile.log`
+
+### Searching by both (values must be strings)
+`bin/jse -f timestamp somefield:/ERROR/ another:null < bigfile.log`
+
+### Searching an input file
+`bin/jse -f timestamp somefield:/ERROR/ another:null -i bigfile.log`
