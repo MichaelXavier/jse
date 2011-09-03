@@ -1,0 +1,17 @@
+# JSE
+
+## Description
+Efficient Haskell port of Ruby's [http://rubygems.org/gems/jse](JSE) JSON
+Stream editor. I started this project to possibly improve on the original's API
+and to teach myself about the Enumerator pattern, Blaze Builder and stream
+editing in Haskell. 
+
+## Building
+`make`
+
+## Usage
+`bin/jse --help`
+
+## Status
+Filtering is currently not working. Test suite is not in place. Don't use it
+for important stuff yet. Need to work on using cabal to install dependencies
