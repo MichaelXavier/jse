@@ -1,5 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module JSE.CLI (annotations, convertConfig, CLIConfig) where
+--module JSE.CLI (annotations, convertConfig, CLIConfig) where
+module JSE.CLI where
 
 import JSE (Config(..), readFilterSpec)
 
@@ -31,7 +32,7 @@ data CLIConfig = CLIConfig { rFields     :: [String],
 annotations :: Annotate Ann
 annotations = record CLIConfig {rFields = def, ignoreC = False, inFile = Nothing, filterSpecs = []} 
                      [ rFields    := def     += help "Fields to return. Returns all if not specified." += explicit += typ "FIELD" += name "f",
-                      ignoreC     := False   += help "Ignore case" += explicit += name "c",
+                      ignoreC     := False   += help "Case sensitive (defaults insensitive)" += explicit += name "c",
                       inFile      := Nothing += typFile += explicit += name "i" += help "Filename (stdin otherwise)",
                       filterSpecs := def     += args]
                       += program "jse"

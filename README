@@ -23,7 +23,7 @@ cabal to install dependencies
     Common flags:
       -f=FIELD            Fields to return. Returns all if not specified.
       -i=FILE             Filename (stdin otherwise)
-      -c                  Ignore case
+      -c                  Case sensitive
       -?       --help     Display help message
       -V       --version  Print version information
 

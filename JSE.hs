@@ -8,9 +8,9 @@ module JSE (Config(..),
 
 import           Blaze.ByteString.Builder (Builder, toByteStringIO)
 import           Control.Monad.IO.Class (MonadIO)
-import           Data.Aeson (json)
+import           Data.Aeson.Parser (json, value)
 import           Data.Aeson.Encode (fromValue)
-import           Data.Aeson.Types (Object, Value(String, Object))
+import           Data.Aeson.Types (Object, Value(..))
 import           Data.Attoparsec (parse, maybeResult)
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
@@ -46,7 +46,8 @@ data Config = Config { returnFields :: [Text],
 
 type Field = Text
 
-data Filter = ValueFilter Field Text Bool |
+data Filter = StringFilter Field Text Bool | -- JSON string
+              ValueFilter Field Value | -- JSON value (not string)
               PatternFilter Field Regex deriving (Show)
 
 pipeline :: Config -> Iteratee ByteString IO ()
@@ -120,14 +121,20 @@ readFilterSpec cSensitive str = readFilterSpec' cSensitive field value
   where (field, value) = spanSkip ':' str
 
 readFilterSpec' :: Bool -> Text -> Text -> Filter
-readFilterSpec' cSensitive f "" = ValueFilter f T.empty cSensitive
-readFilterSpec' cSensitive f v  = maybe valF (const patF) $ match isRegex bsValue []
-  where isRegex  = compile "^/.*/$" []
-        valF     = ValueFilter f v cSensitive
-        patF     = PatternFilter f $ compile (encodeUtf8 . stripSlashes $ v) opts
-        opts     = if cSensitive then []
-                   else               [caseless]
-        bsValue  = encodeUtf8 v
+readFilterSpec' cSensitive field "" = StringFilter field T.empty cSensitive
+readFilterSpec' cSensitive field v  = maybe valF (const patF) $ match isRegex bsValue []
+  where isRegex   = compile "^/.*/$" []
+        valF      = case jsonValue of
+                    (String str) -> StringFilter field str cSensitive
+                    _            -> ValueFilter field jsonValue
+        jsonValue = case maybeResult $ parse value $ encodeUtf8 v of
+                      Just val -> val
+                      -- CmdArgs eats double quotes around string values
+                      Nothing  -> String v
+        patF      = PatternFilter field $ compile (encodeUtf8 . stripSlashes $ v) opts
+        opts      = if cSensitive then []
+                    else               [caseless]
+        bsValue   = encodeUtf8 v
 
 spanSkip :: Char -> Text -> (Text, Text)
 spanSkip pred xs = (left, T.tail right)
@@ -142,7 +149,8 @@ objectMatchesAny [] obj = True
 objectMatchesAny fs obj = any (objectMatches obj) fs
 
 objectMatches :: Object -> Filter -> Bool
-objectMatches obj (ValueFilter f v cSensitive) = isJust $ fmap matcher $ M.lookup f obj
+objectMatches obj (ValueFilter f v) = maybe False (== v) $ M.lookup f obj
+objectMatches obj (StringFilter f v cSensitive) = maybe False matcher $ M.lookup f obj
   where matcher (String text) = if cSensitive then text == v
                                 else               CI.mk text == CI.mk v
         matcher _             = False

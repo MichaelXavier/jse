@@ -8,6 +8,11 @@ import Data.Enumerator.Binary (enumHandle)
 import System.Console.CmdArgs.Implicit (cmdArgs_)
 import System.IO (stdin)
 
+import Data.Text (pack)
+import           Data.Attoparsec (parse, eitherResult)
+import           Data.Aeson.Parser (json, value)
+import           Data.Text.Encoding (encodeUtf8)
+
 main :: IO ()
 main = do
   cliConfig <- cmdArgs_ annotations
