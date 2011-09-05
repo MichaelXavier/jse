@@ -1,14 +1,22 @@
-GHC = ghc
-GHC_OPTS = -O3
+CABAL = cabal
+GHC_PKG = ghc-pkg
 
-all: bin/jse
+all: build
+
+install: install_deps
+	$(CABAL) install
+
+uninstall:
+	 $(GHC_PKG) unregister jse
+
+build: configure install_deps
+	$(CABAL) build
+
+install_deps: jse.cabal
+	$(CABAL) install --only-dependencies
+
+configure: jse.cabal *.hs **/*.hs
+	$(CABAL) configure
 
 clean:
-	rm -f *.hi *.o JSE/*.hi JSE/*.oa bin/jse
-
-bin:
-	mkdir bin
-
-bin/jse: Main.hs JSE.hs JSE/*.hs bin
-	$(GHC) $(GHC_OPTS) -o $@ $<
-	chmod +x $@
+	$(CABAL) clean

@@ -7,11 +7,21 @@ and to teach myself about the Enumerator pattern, Blaze Builder and stream
 editing in Haskell. 
 
 ## Status
-Still working out the kinks. Test suite is not in place. Need to work on using
-cabal to install dependencies
+Test suite is not in place.
 
 ## Building
 `make`
+
+This will use cabal to install all the dependencies from HackageDB. You must
+have cabal installed in order to do this.
+
+## Installing
+`make install`
+
+## Uninstalling
+For some unconscionable reason, cabal does not offer any interface to
+unregister or uninstall executables which were installed using cabal. You
+pretty much have to just `rm` the bin which you can find using `which jse`
 
 ## Usage
     bin/jse --help

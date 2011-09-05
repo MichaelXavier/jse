@@ -3,3 +3,5 @@ bin/*
 *.hi
 **/*.hi
 **/*.o
+dist
+*.log
