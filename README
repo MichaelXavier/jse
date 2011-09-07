@@ -28,7 +28,7 @@ pretty much have to just `rm` the bin which you can find using `which jse`
 
     JSON Stream Editor
 
-    jse [OPTIONS] [ITEM]
+    jse [OPTIONS] [FILTERSPEC]
 
     Common flags:
       -f=FIELD            Fields to return. Returns all if not specified.
