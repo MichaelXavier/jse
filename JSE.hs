@@ -48,7 +48,7 @@ type Field = Text
 
 data Filter = StringFilter Field Text Bool | -- JSON string
               ValueFilter Field Value | -- JSON value (not string)
-              PatternFilter Field Regex deriving (Show)
+              PatternFilter Field Regex deriving (Show, Eq)
 
 pipeline :: Config -> Iteratee ByteString IO ()
 pipeline Config {source         = s,

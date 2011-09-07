@@ -18,7 +18,7 @@ homepage:           http://github.com/michaelxavier/MusicBrainz
 Executable jse
   Main-Is: Main.hs
   Ghc-Options:     -Wall
-  Build-Depends:   aeson           >= 0.3.2.11 && < 0.4,
+  Build-Depends:  aeson            >= 0.3.2.11 && < 0.4,
                   attoparsec       >= 0.9.1.2  && < 0.10,
                   base             >= 4        && < 5,
                   blaze-builder    >= 0.3.0.1  && < 0.4,
@@ -30,6 +30,11 @@ Executable jse
                   pcre-light       >= 0.4      && < 0.5,
                   text             >= 0.11.1.5 && < 0.12,
                   transformers     >= 0.2.2.0  && < 0.3
+
+Test-Suite test-jse
+  Type: exitcode-stdio-1.0
+  Main-Is: JSE/Testing/Main.hs
+  Build-Depends:  hspec >= 0.8.1 && < 0.9
 
 source-repository head
   type:     git

@@ -20,3 +20,9 @@ configure: jse.cabal *.hs **/*.hs
 
 clean:
 	$(CABAL) clean
+
+test: configure_tests
+	$(CABAL) test
+
+configure_tests:
+	$(CABAL) configure --enable-tests
