@@ -4,6 +4,12 @@ module JSE (Config(..),
             readFilterSpec,
             Field,
             pipeline,
+            splitLines,
+            parseLine,
+            filterObjects,
+            restrictObjects,
+            objectAsValue,
+            encoder,
             Value) where
 
 import           Blaze.ByteString.Builder (Builder, toByteStringIO)

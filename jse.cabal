@@ -34,7 +34,8 @@ Executable jse
 Test-Suite test-jse
   Type: exitcode-stdio-1.0
   Main-Is: JSE/Testing/Main.hs
-  Build-Depends:  hspec >= 0.8.1 && < 0.9
+  Build-Depends:  hspec                    >= 0.8.1 && < 0.9,
+                  blaze-builder-enumerator <= 0.2.0.2 && < 0.3
 
 source-repository head
   type:     git
